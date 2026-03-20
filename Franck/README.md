@@ -19,12 +19,4 @@ L'environnement et la gestion des dépendances sont assurés par `uv`. Tous les 
 - `src/` : Scripts python auxiliaires.
 - `pyproject.toml` : Dépendances gérées par uv.
 
-## Installation et Exécution
-
-1. Assurez-vous d'avoir Python installé (>= 3.10) et `uv`.
-2. Synchronisez l'environnement et lancez Jupyter Lab :
-
-   ```bash
-   uv sync
-   uv run jupyter lab
    ```
