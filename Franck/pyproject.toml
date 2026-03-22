@@ -20,5 +20,7 @@ dependencies = [
     "fastparquet>=0.9.4",
     "fsspec>=2025.11.0",
     "s3fs>=2025.11.0",
-    
+    "imbalanced-learn>=0.14.1",
+    "nltk>=3.9.3",
+    "joblib>=1.5.3",
 ]

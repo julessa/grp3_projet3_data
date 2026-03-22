@@ -1,73 +1,90 @@
 import streamlit as st
 import time
-from config import APP_NAME, APP_DESC, MODEL_PATH
+from config import APP_NAME, APP_DESC, MODELS_CONFIG, DEFAULT_MODEL
 from models import FakeNewsModel, predict_news
 
 # Configuration Streamlit
 st.set_page_config(page_title=APP_NAME, page_icon="🕵️‍♂️", layout="centered")
 
-@st.cache_resource(show_spinner="Chargement initial du modèle NLP...")
-def load_trained_model():
-    """Charge l'instance du modèle une seule fois grâce au cache."""
-    model = FakeNewsModel(MODEL_PATH)
+@st.cache_resource(show_spinner="Chargement du modèle sélectionné...")
+def get_model(model_key: str):
+    """Charge l'instance du modèle avec mise en cache."""
+    model = FakeNewsModel(model_key)
     model.load()
     return model
 
 def main():
     st.title(f"🕵️‍♂️ {APP_NAME}")
-    st.write(APP_DESC)
+    st.markdown(f"*{APP_DESC}*")
     
-    # Optionnel: Selectbox des modèles dans la sidebar
+    # Sidebar pour le choix du modèle
     with st.sidebar:
-        st.header("Paramètres")
-        modele_choisi = st.selectbox("Sélection des modèles prêts :", ["Baseline (LogReg)", "LSTM", "BERT"])
+        st.header("🎛️ Configuration")
+        model_list = list(MODELS_CONFIG.keys())
+        selected_key = st.selectbox("Choisissez le modèle d'analyse :", model_list, index=0)
+        
+        conf = MODELS_CONFIG[selected_key]
+        st.info(f"**Description :** {conf['desc']}")
+        
         st.markdown("---")
-        if modele_choisi == "Baseline (LogReg)":
-            st.write("📊 **Performances Globales**")
-            st.write("- **Accuracy** : ~61 %")
-            st.write("- **F1-Score** : ~59 %")
-            st.info("C'est le modèle TF-IDF entraîné sur le jeu LIAR par défaut.")
+        st.write("📊 **Métriques (Dataset LIAR)**")
+        if "TF-IDF" in selected_key:
+            st.write("- **Accuracy** : ~0.64")
+            st.write("- **F1-Score** : ~0.63")
         else:
-            st.warning("⚠️ Les modèles avancés (LSTM / BERT) nécessiteraient d'être entraînés et interfacés dans models.py.")
+            st.write("- **Accuracy** : ~0.60")
+            st.write("- **F1-Score** : ~0.60")
 
-    # Tentative d'instanciation
+    # Chargement du modèle
     try:
-        predictor = load_trained_model()
+        predictor = get_model(selected_key)
     except Exception as e:
-        st.error(str(e))
+        st.error(f"Erreur lors du chargement : {e}")
         st.stop()
         
-    st.markdown("### Soumettez une déclaration")
+    st.markdown("### 📝 Soumettez une déclaration")
     user_input = st.text_area(
-        label="Collez un paragraphe complet ou un article pour fournir un contexte approprié :", 
+        label="Saisissez le texte à analyser (déclaration politique, article, etc.) :", 
         height=200, 
-        placeholder="Un haut représentant de la banque mondiale affirme que..."
+        placeholder="Entrez votre texte ici..."
     )
     
-    if st.button("Analyze News", type="primary"):
+    col1, col2 = st.columns([1, 4])
+    with col1:
+        submit = st.button("Analyser", type="primary", use_container_width=True)
+    
+    if submit:
         if not user_input.strip():
-            st.error("Veuillez saisir du texte avant de lancer l'inférence.")
+            st.warning("Veuillez saisir du texte pour lancer l'analyse.")
         else:
-            with st.spinner("Prétraitement & Inférence..."):
-                time.sleep(0.2) # Esthétique "temps réel"
-                # Appel de la fonction définie dans la spec
+            with st.spinner("Analyse en cours..."):
                 label, proba_fake, proba_real = predict_news(user_input, predictor)
                 
             confidence = max(proba_fake, proba_real)
             
             st.markdown("---")
-            st.markdown("### Résultat de l'analyse")
+            st.subheader("🏁 Résultat de l'Analyse")
             
+            # Affichage visuel
             if label == "Fake News":
-                st.error(f"🚨 **{label}**")
-                st.write("Ce texte est très probablement trompeur selon le modèle entraîné.")
-                st.metric(label="Score de Confiance", value=f"{confidence * 100:.1f} %")
-                st.progress(confidence)
+                st.error(f"### 🚨 {label}")
+                st.write("Ce contenu présente des caractéristiques typiques de **désinformation**.")
             else:
-                st.success(f"✅ **{label}**")
-                st.write("Ce texte est vraisemblablement authentique / factuel.")
-                st.metric(label="Score de Confiance", value=f"{confidence * 100:.1f} %")
-                st.progress(confidence)
+                st.success(f"### ✅ {label}")
+                st.write("Ce contenu semble être une **information factuelle**.")
+            
+            # Métriques de confiance
+            m1, m2 = st.columns(2)
+            m1.metric("Fiabilité estimée", f"{confidence * 100:.1f} %")
+            m2.metric("Classe prédite", label)
+            
+            st.progress(confidence, text=f"Certitude : {confidence*100:.1f}%")
+            
+            # Message de contexte
+            with st.expander("Détails techniques"):
+                st.write(f"Modèle utilisé : `{selected_key}`")
+                st.write(f"Probabilité Fake : `{proba_fake:.4f}`")
+                st.write(f"Probabilité Real : `{proba_real:.4f}`")
 
 if __name__ == "__main__":
     main()
