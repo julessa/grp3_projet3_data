@@ -1,1 +1,32 @@
 /jules/venv
+
+# Modèles et embeddings volumineux
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.gguf
+**/checkpoint-*/
+**/embeddings/*.txt
+**/embeddings/*.vec
+**/*.joblib
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Data brute et traitée (trop lourde pour git)
+**/data/brutes/
+**/data/traitees/
+**/data/fusionnes/
+**/data/modeles/
+
+# Divers
+.env
+.DS_Store
