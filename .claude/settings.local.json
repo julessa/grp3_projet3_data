@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k, {kk:round\\(vv,4\\) if isinstance\\(vv,float\\) else vv for kk,vv in v.items\\(\\) if kk not in [''''classification_report_test'''',''''confusion_matrix_test'''']}\\) for k,v in d.items\\(\\) if k!=''''GridSearch'''']\")"
+    ]
+  }
+}
