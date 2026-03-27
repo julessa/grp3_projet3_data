@@ -27,6 +27,14 @@ venv/
 **/data/fusionnes/
 **/data/modeles/
 
+# Claude Code
+.claude/
+.claudeignore
+CLAUDE.md
+**/CLAUDE.md
+AGENTS.md
+**/AGENTS.md
+
 # Divers
 .env
 .DS_Store

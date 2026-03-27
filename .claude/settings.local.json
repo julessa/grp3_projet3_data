@@ -1,7 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k, {kk:round\\(vv,4\\) if isinstance\\(vv,float\\) else vv for kk,vv in v.items\\(\\) if kk not in [''''classification_report_test'''',''''confusion_matrix_test'''']}\\) for k,v in d.items\\(\\) if k!=''''GridSearch'''']\")"
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k, {kk:round\\(vv,4\\) if isinstance\\(vv,float\\) else vv for kk,vv in v.items\\(\\) if kk not in [''''classification_report_test'''',''''confusion_matrix_test'''']}\\) for k,v in d.items\\(\\) if k!=''''GridSearch'''']\")",
+      "WebSearch",
+      "Bash(uv run python -c \":*)",
+      "Bash(python -c \":*)",
+      "Bash(.venv/Scripts/python.exe -c \"import joblib, sklearn, numpy; print\\(''joblib:'', joblib.__version__, ''sklearn:'', sklearn.__version__, ''numpy:'', numpy.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -c \"import fastapi; print\\(''fastapi:'', fastapi.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -c \"import uvicorn; print\\(''uvicorn ok''\\)\")",
+      "Bash(.venv/Scripts/python.exe -c \"import nltk; print\\(''nltk ok''\\)\")",
+      "Bash(.venv/Scripts/pip.exe install:*)",
+      "Bash(uv --version)",
+      "Bash(uv add:*)",
+      "Bash(.venv/Scripts/python.exe -c \":*)",
+      "Bash(npx tsc:*)",
+      "Bash(curl -s http://127.0.0.1:8000/health)"
     ]
   }
 }
