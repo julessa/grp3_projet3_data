@@ -14,22 +14,9 @@ Système de détection automatique de fausses déclarations politiques par appre
 ---
 
 ## Membres du groupe
-**Franck** 
-**Jules** 
-**Valentine** 
-**Djouhra** 
-**Laura** 
+**Franck** **Jules** **Valentine** **Djouhra** **Laura** 
 ---
 
-Le projet suit un pipeline en cinq étapes :
-
-```
-LIAR Dataset  →  EDA & Prétraitement  →  Feature Extraction  →  Entraînement  →  Déploiement
-   (TSV)            (Parquet)            TF-IDF / GloVe /          Sklearn /        FastAPI +
-                                         Transformers             HuggingFace       Next.js
-```
-
----
 
 ## Dataset
 
