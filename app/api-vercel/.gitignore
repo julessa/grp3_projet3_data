@@ -1,0 +1,3 @@
+.vercel
+# Override parent gitignore — include joblib models
+!*.joblib

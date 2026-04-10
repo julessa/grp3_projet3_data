@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Erreur inconnue";
     return NextResponse.json(
-      { error: `Impossible de joindre l'API Python. Vérifiez que le serveur tourne sur ${PYTHON_API}. Détail : ${msg}` },
+      { error: `Impossible de joindre l'API. Detail : ${msg}` },
       { status: 503 }
     );
   }
