@@ -22,7 +22,8 @@ venv/
 .ipynb_checkpoints/
 
 # Data brute (repos sources clonés - trop lourd, contient des .git imbriqués)
-**/data/brutes/
+**/data/brutes/*
+!**/data/brutes/liar_dataset/
 **/data/modeles/
 
 # Claude Code
