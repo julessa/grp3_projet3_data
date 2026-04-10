@@ -21,10 +21,8 @@ venv/
 # Jupyter checkpoints
 .ipynb_checkpoints/
 
-# Data brute et traitée (trop lourde pour git)
+# Data brute (repos sources clonés - trop lourd, contient des .git imbriqués)
 **/data/brutes/
-**/data/traitees/
-**/data/fusionnes/
 **/data/modeles/
 
 # Claude Code
