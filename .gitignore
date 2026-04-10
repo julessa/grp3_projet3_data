@@ -11,6 +11,14 @@
 **/embeddings/*.vec
 **/*.joblib
 
+# Exceptions : on garde les modèles finaux dans models/ (via LFS)
+!models/**/*.joblib
+!models/**/*.safetensors
+
+# Checkpoints d'entraînement HuggingFace (redondants avec models/<name>_best/)
+models/distilbert/
+models/roberta/
+
 # Python
 __pycache__/
 *.pyc
