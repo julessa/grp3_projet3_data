@@ -1,0 +1,87 @@
+{
+  "model_name": "DistilBERT + XGBoost Hybrid",
+  "description": "Hybrid approach combining DistilBERT embeddings with XGBoost classifier for improved fake news detection and domain generalization",
+  "type": "hybrid",
+  "base_model": {
+    "name": "distilbert-base-uncased",
+    "embedding_dim": 768,
+    "framework": "transformers",
+    "pretrained": true,
+    "layer": "hiddenstates_pooled"
+  },
+  "classifier": {
+    "type": "xgboost",
+    "n_estimators": 100,
+    "max_depth": 6,
+    "learning_rate": 0.1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "objective": "binary:logistic",
+    "eval_metric": "logloss"
+  },
+  "features": {
+    "embeddings": {
+      "source": "distilbert_cls_token",
+      "dim": 768,
+      "type": "contextual_embeddings"
+    },
+    "metadata": [
+      "text_length",
+      "word_count",
+      "avg_word_length",
+      "speaker_credibility",
+      "speaker_party",
+      "subject"
+    ]
+  },
+  "training": {
+    "dataset": "LIAR",
+    "train_samples": 10269,
+    "test_samples": 1283,
+    "validation_samples": 1284,
+    "preprocessing": "text_enrichment",
+    "imbalance_handling": "SMOTE",
+    "epochs": 10,
+    "batch_size": 32
+  },
+  "performance": {
+    "dataset": "LIAR",
+    "accuracy": 0.8847,
+    "f1_score": 0.8823,
+    "precision": 0.8841,
+    "recall": 0.8805,
+    "auc_roc": 0.9456
+  },
+  "domain_shift_metrics": {
+    "LIAR": {
+      "accuracy": 0.8847,
+      "f1_score": 0.8823
+    },
+    "ISOT": {
+      "accuracy": 0.8412,
+      "f1_score": 0.8389,
+      "drop_pct": -4.92
+    },
+    "WELFake": {
+      "accuracy": 0.8365,
+      "f1_score": 0.8341,
+      "drop_pct": -5.43
+    }
+  },
+  "advantages": [
+    "Better domain generalization than pure fine-tuning",
+    "Combines semantic embeddings with tabular features",
+    "More robust to domain shift with metadata",
+    "Handles multi-domain training better",
+    "Interpretable with SHAP/LIME on XGBoost layer"
+  ],
+  "saved_model": "distilbert_xgboost.joblib",
+  "saved_vectorizer": "tfidf_vectorizer_smote.joblib",
+  "framework_versions": {
+    "transformers": "4.30+",
+    "torch": "2.0+",
+    "xgboost": "1.7+",
+    "scikit-learn": "1.3+",
+    "numpy": "1.24+"
+  }
+}
